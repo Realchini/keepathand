@@ -18,10 +18,10 @@ class dataBase_todo {
     String path = join(dir, 'todo.db');
     var database = await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: (Database _db, int version) async {
         await _db.execute(
-          'CREATE TABLE $table(checkbox_id INTEGER PRIMARY KEY AUTOINCREMENT, date INTEGER, title TEXT, value INTEGER, CHECK(value IN (0, 1)))'
+          'CREATE TABLE $table(id INTEGER PRIMARY KEY AUTOINCREMENT, date INTEGER, title TEXT, value INTEGER)'
         );
     }
     );
