@@ -1,57 +1,87 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/resources/app_strings.dart';
+import 'package:keep_at_hand/models/note_model.dart';
+import 'package:keep_at_hand/service/db.dart';
+import 'package:keep_at_hand/ui/pages/note_page.dart';
+import 'package:keep_at_hand/ui/views/loading.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> _contacts = [];
-  static const maxMockContacts = 100;
-
-  void _generateList() {
-    for(int i=0; i <= maxMockContacts; i++) {
-      _contacts.add("Contact #$i");
-    }
-  }
+  bool loading = true;
+  List<Note> notes;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    setState(() {
-      _generateList();
-    });
+    refresh();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title)
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: _contacts.map(_buildTextContainer).toList(),
+        title: Text(
+          "keep at hand",
+          style: TextStyle(
+            //fontStyle: FontStyle.italic,
+            //fontWeight: FontWeight.bold,
+          ),
         ),
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NotePage(note: new Note()))).then((v) {
+            refresh();
+          });
+        },
+      ),
+      body: loading ? Loading() : ListView.builder(
+              padding: EdgeInsets.all(5),
+              itemCount: notes.length,
+              itemBuilder: (context, index) {
+                Note note = notes[index];
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  color: Colors.yellow[200],
+                  child: ListTile(
+                      title: Text(note.title),
+                      subtitle: Text(
+                        note.content,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                builder: (_) => NotePage(
+                                      note: note,
+                                    )))
+                            .then((v) {
+                          refresh();
+                        });
+                      }),
+                );
+              },
+            ),
     );
   }
 
-  Widget _buildTextContainer(String contactName) {
-    return Container(
-      width: double.infinity,
-      //height: double.infinity, // DP
-      color: Colors.lightBlue,
-      padding: EdgeInsets.all(18),
-      child: Text (contactName),
-    );
+  Future<void> refresh() async {
+    notes = await dataBase().getNotes();
+    setState(() => loading = false);
   }
+
+// void refresh() {
+//   notes = dataBase().getNotes();
+//   //setState(() => loading = false);
+// }
 }

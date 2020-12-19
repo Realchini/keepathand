@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/my_app.dart';
+import 'package:keep_at_hand/app.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(App());
 }
-

@@ -1,4 +1,4 @@
-package com.example.flutter_app_test
+package com.example.keep_at_hand
 
 import io.flutter.embedding.android.FlutterActivity
 
