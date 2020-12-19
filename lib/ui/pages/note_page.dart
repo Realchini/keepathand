@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:keep_at_hand/models/note_model.dart';
+import 'package:keep_at_hand/resources/app_strings.dart';
 import 'package:keep_at_hand/service/db.dart';
 
 class NotePage extends StatefulWidget {
@@ -30,36 +31,39 @@ class _NotePageState extends State<NotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(editMode ? "Edit note" : "New note"),
-          actions: <Widget>[
+      appBar: AppBar(
+        title: Text(editMode ? AppStrings.editMode : AppStrings.newNoteMode),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              setState(() {});
+              save();
+              editMode = true;
+            },
+          ),
+          if (editMode)
             IconButton(
-              icon: Icon(Icons.save),
+              icon: Icon(Icons.delete),
               onPressed: () {
-                setState(() {});
-                save();
+                delete();
               },
-            ),
-            if (editMode)
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  delete();
-                },
-              )
-          ],
+            )
+        ],
+      ),
+      body: ListView(padding: EdgeInsets.all(14), children: <Widget>[
+        TextField(
+          controller: title,
+          decoration: InputDecoration(hintText: "Заголовок"),
         ),
-        body: ListView(padding: EdgeInsets.all(14), children: <Widget>[
-        TextField( //title != '' ? (controller: title) : (decoration: InputDecoration(hintText: "Заголовок")),
-        controller: title,
-        decoration: InputDecoration(hintText: "Заголовок"),
-    ),
-    SizedBox(height: 10),
-    TextField(
-    controller: content,
-    maxLines: 22,
-    decoration: InputDecoration(hintText: "Начните писать")),
-    ]),
+        SizedBox(height: 10),
+        TextField(
+            controller: content,
+            keyboardType: TextInputType.multiline,
+            autofocus: true,
+            maxLines: 22,
+            decoration: InputDecoration(hintText: "Начните писать", border: InputBorder.none,)),
+      ]),
     );
   }
 
