@@ -1,10 +1,11 @@
 import 'package:keep_at_hand/models/note_model.dart';
+import 'package:keep_at_hand/models/todo_list_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class dataBase_todo {
   static Database _database;
-  final String table = 'notes';
+  final String table = 'todo';
 
   Future<Database> get db async {
     if(_database != null) return _database;
@@ -14,43 +15,43 @@ class dataBase_todo {
 
   initDB() async {
     var dir = await getDatabasesPath();
-    String path = join(dir, 'keepathand.db');
+    String path = join(dir, 'todo.db');
     var database = await openDatabase(
       path,
       version: 1,
       onCreate: (Database _db, int version) async {
         await _db.execute(
-          'CREATE TABLE $table(id INTEGER PRIMARY KEY AUTOINCREMENT, date INTEGER, title TEXT, content TEXT)'
+          'CREATE TABLE $table(checkbox_id INTEGER PRIMARY KEY AUTOINCREMENT, date INTEGER, title TEXT, value INTEGER, CHECK(value IN (0, 1)))'
         );
     }
     );
     return database;
   }
 
-  Future<void> add(Note note) async {
+  Future<void> add(ToDo todo) async {
     var database = await db;
-    note.setDate();
-    await database.insert(table, note.toMap());
+    todo.setDate();
+    await database.insert(table, todo.toMap());
   }
 
-  Future<void> update(Note note) async {
+  Future<void> update(ToDo todo) async {
     var database = await db;
-    note.setDate();
-    await database.update(table, note.toMap(), where: 'id = ?', whereArgs: [note.id]);
+    todo.setDate();
+    await database.update(table, todo.toMap(), where: 'id = ?', whereArgs: [todo.id]);
   }
 
-  Future<void> delete(Note note) async {
+  Future<void> delete(ToDo todo) async {
     var database = await db;
-    await database.delete(table, where: 'id = ?', whereArgs: [note.id]);
+    await database.delete(table, where: 'id = ?', whereArgs: [todo.id]);
   }
 
-  Future<List<Note>> getNotes() async {
+  Future<List<ToDo>> getToDos() async {
     var database = await db;
     List<Map<String, dynamic>> maps = await database.rawQuery('SELECT * FROM $table ORDER BY date DESC');
-    List<Note> notes = new List<Note>();
+    List<ToDo> todos = new List<ToDo>();
     for(Map<String, dynamic> map in maps) {
-      notes.add(Note.fromMap(map));
+      todos.add(ToDo.fromMap(map));
     }
-    return notes;
+    return todos;
   }
 }
