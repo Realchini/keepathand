@@ -1,6 +1,7 @@
 class Note{
   int id, date;
   String title, content;
+  //String get uniqueTag => "$date$hashCode";
 
   setDate() {
     DateTime now = DateTime.now();

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keep_at_hand/models/note_model.dart';
 import 'package:keep_at_hand/resources/app_strings.dart';
@@ -36,6 +37,7 @@ class _HomePageState extends State<HomePage> {
       //         ),
       //   ),
       // ),
+
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
@@ -73,32 +75,35 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         color: Colors.white, //Colors.yellow[200]
-                        child: ListTile(
-                          title: Text(
-                            note.title,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                        child: Container(
+                          //padding: EdgeInsets.all(0),
+                          child: ListTile(
+                            title: Text(
+                              note.title,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
+                            subtitle: Text(
+                              note.content,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (_) => NotePage(
+                                            note: note,
+                                          )))
+                                  .then((v) {
+                                refresh();
+                              });
+                            },
+                            onLongPress: () {
+
+                            },
                           ),
-                          subtitle: Text(
-                            note.content,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(
-                                    builder: (_) => NotePage(
-                                          note: note,
-                                        )))
-                                .then((v) {
-                              refresh();
-                            });
-                          },
-                          onLongPress: () {
-                            
-                          },
                         ),
                       );
                     },
