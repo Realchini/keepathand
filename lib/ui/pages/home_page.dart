@@ -4,6 +4,7 @@ import 'package:keep_at_hand/models/note_model.dart';
 import 'package:keep_at_hand/resources/app_strings.dart';
 import 'package:keep_at_hand/service/db.dart';
 import 'package:keep_at_hand/ui/pages/note_page.dart';
+import 'package:keep_at_hand/ui/pages/todo_page.dart';
 import 'package:keep_at_hand/ui/views/loading.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,6 +50,15 @@ class _HomePageState extends State<HomePage> {
           });
         },
       ),
+
+      drawer: Drawer(
+          child: IconButton(
+        icon: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => ToDoPage()));
+        },
+      )),
 
       body: loading
           ? Loading()
@@ -100,9 +110,7 @@ class _HomePageState extends State<HomePage> {
                                 refresh();
                               });
                             },
-                            onLongPress: () {
-
-                            },
+                            onLongPress: () {},
                           ),
                         ),
                       );
