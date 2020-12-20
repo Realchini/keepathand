@@ -4,6 +4,7 @@ import 'package:keep_at_hand/models/note_model.dart';
 import 'package:keep_at_hand/resources/app_colors.dart';
 import 'package:keep_at_hand/resources/app_strings.dart';
 import 'package:keep_at_hand/service/db.dart';
+import 'package:keep_at_hand/ui/pages/home_page.dart';
 
 class NotePage extends StatefulWidget {
   final Note note;
@@ -32,55 +33,63 @@ class _NotePageState extends State<NotePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.appBackgroundColor,
-      appBar: AppBar(
-        title: Text(editMode ? AppStrings.editMode : AppStrings.newNoteMode),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () {
-              setState(() {});
-              save();
-              editMode = true;
-            },
-          ),
-          if (editMode)
+    return WillPopScope(
+      onWillPop: () {
+        print("leaving note page");
+        save();
+        Navigator.of(context).pop();
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.appBackgroundColor,
+        appBar: AppBar(
+          title: Text(editMode ? AppStrings.editMode : AppStrings.newNoteMode),
+          actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: Icon(Icons.save),
               onPressed: () {
-                delete();
+                setState(() {});
+                save();
+                editMode = true;
               },
-            )
-        ],
-      ),
-      body: ListView(padding: EdgeInsets.all(14), children: <Widget>[
-        TextField(
-          style: TextStyle(
-            color: AppColors.editNoteTitleColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
-          controller: title,
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: "Заголовок",
-          ),
-          textCapitalization: TextCapitalization.sentences,
+            ),
+            if (editMode)
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  delete();
+                },
+              )
+          ],
         ),
-        SizedBox(height: 10),
-        TextField(
-            controller: content,
-            keyboardType: TextInputType.multiline,
-            textCapitalization: TextCapitalization.sentences,
-            //autofocus: true,
-            maxLines: 22,
-            style: TextStyle(color: AppColors.editNoteContentColor),
+        body: ListView(padding: EdgeInsets.all(14), children: <Widget>[
+          TextField(
+            style: TextStyle(
+              color: AppColors.editNoteTitleColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+            controller: title,
+            autofocus: true,
             decoration: InputDecoration(
-              hintText: "Начните писать",
-              border: InputBorder.none,
-            )),
-      ]),
+                hintText: "Заголовок",
+                hintStyle: TextStyle(color: AppColors.editNoteTitleHintColor)),
+            textCapitalization: TextCapitalization.sentences,
+          ),
+          SizedBox(height: 10),
+          TextField(
+              controller: content,
+              keyboardType: TextInputType.multiline,
+              textCapitalization: TextCapitalization.sentences,
+              //autofocus: true,
+              maxLines: 22,
+              style: TextStyle(color: AppColors.editNoteContentColor),
+              decoration: InputDecoration(
+                  hintText: "Начните писать",
+                  border: InputBorder.none,
+                  hintStyle:
+                      TextStyle(color: AppColors.editNoteContentHintColor))),
+        ]),
+      ),
     );
   }
 

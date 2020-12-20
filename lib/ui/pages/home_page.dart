@@ -138,7 +138,20 @@ class _HomePageState extends State<HomePage> {
                                       refresh();
                                     });
                                   },
-                                  onLongPress: () {},
+                                  onLongPress: () {
+                                    //createAlertDialog(context, note);
+                                    createAlertDialog(context, note)
+                                        .then((deleteOrNot) {
+                                      if (deleteOrNot)
+                                        Scaffold.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text("Удалено"),
+                                        ));
+                                    });
+                                    print("long pressed on: " + note.title);
+                                    //dataBase().delete(note);
+                                    //refresh();
+                                  },
                                 ),
                               ),
                             );
@@ -153,6 +166,35 @@ class _HomePageState extends State<HomePage> {
   Future<void> refresh() async {
     notes = await dataBase().getNotes();
     setState(() => loading = false);
+  }
+
+  Future<bool> createAlertDialog(BuildContext context, Note note) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: AppColors.alertBackgroundColor,
+            title: Text(AppStrings.deleteNoteQuestion),
+            actions: [
+              MaterialButton(
+                elevation: 5.0,
+                child: Text(AppStrings.yes),
+                onPressed: () {
+                  dataBase().delete(note);
+                  refresh();
+                  Navigator.of(context).pop(true);
+                },
+              ),
+              MaterialButton(
+                elevation: 5.0,
+                child: Text(AppStrings.cancel),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              )
+            ],
+          );
+        });
   }
 
 // void refresh() {

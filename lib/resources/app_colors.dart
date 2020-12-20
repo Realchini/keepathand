@@ -39,6 +39,12 @@ class AppColors {
     return Colors.black54;
   }
 
+  static Color get alertBackgroundColor {
+    if(isNight()) return Colors.grey;
+    return Colors.white;
+  }
+
+  // NOTE PAGE
   static Color get editNoteTitleColor {
     if(isNight()) return Colors.grey[300]; //grey[300]
     return null; //Colors.black;
@@ -46,6 +52,16 @@ class AppColors {
 
   static Color get editNoteContentColor {
     if(isNight()) return Colors.grey[300]; //grey[400]
+    return null; //Colors.black54;
+  }
+
+  static Color get editNoteTitleHintColor {
+    if(isNight()) return Colors.grey[600]; //grey[300]
+    return null; //Colors.black;
+  }
+
+  static Color get editNoteContentHintColor {
+    if(isNight()) return Colors.grey[600]; //grey[300]
     return null; //Colors.black54;
   }
 }
