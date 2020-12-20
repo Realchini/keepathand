@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keep_at_hand/models/note_model.dart';
+import 'package:keep_at_hand/resources/app_colors.dart';
 import 'package:keep_at_hand/resources/app_strings.dart';
 import 'package:keep_at_hand/service/db.dart';
 
@@ -32,6 +33,7 @@ class _NotePageState extends State<NotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.appBackgroundColor,
       appBar: AppBar(
         title: Text(editMode ? AppStrings.editMode : AppStrings.newNoteMode),
         actions: <Widget>[
@@ -54,10 +56,16 @@ class _NotePageState extends State<NotePage> {
       ),
       body: ListView(padding: EdgeInsets.all(14), children: <Widget>[
         TextField(
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(
+            color: AppColors.editNoteTitleColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
           controller: title,
           autofocus: true,
-          decoration: InputDecoration(hintText: "Заголовок", ),
+          decoration: InputDecoration(
+            hintText: "Заголовок",
+          ),
           textCapitalization: TextCapitalization.sentences,
         ),
         SizedBox(height: 10),
@@ -67,7 +75,11 @@ class _NotePageState extends State<NotePage> {
             textCapitalization: TextCapitalization.sentences,
             //autofocus: true,
             maxLines: 22,
-            decoration: InputDecoration(hintText: "Начните писать", border: InputBorder.none,)),
+            style: TextStyle(color: AppColors.editNoteContentColor),
+            decoration: InputDecoration(
+              hintText: "Начните писать",
+              border: InputBorder.none,
+            )),
       ]),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:keep_at_hand/models/todo_list_model.dart';
+import 'package:keep_at_hand/models/todo_model.dart';
 import 'package:keep_at_hand/service/db_todo.dart';
 import 'package:keep_at_hand/ui/views/loading.dart';
 

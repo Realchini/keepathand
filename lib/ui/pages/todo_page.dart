@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:keep_at_hand/models/todo_list_model.dart';
+import 'package:keep_at_hand/models/todo_model.dart';
 import 'package:keep_at_hand/service/db_todo.dart';
+import 'package:keep_at_hand/ui/pages/add_todo_page.dart';
 import 'package:keep_at_hand/ui/views/loading.dart';
 
 class ToDoPage extends StatefulWidget {
@@ -18,11 +19,11 @@ class _ToDoPageState extends State<ToDoPage> {
   TextEditingController titleField;
   TextEditingController testtitle;
 
-  // @override
-  // void setState(fn) {
-  //   super.setState(fn);
-  //   refresh();
-  // }
+  @override
+  void setState(fn) {
+    super.setState(fn);
+    refresh();
+  }
 
   @override
   void initState() {
@@ -36,6 +37,11 @@ class _ToDoPageState extends State<ToDoPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Список дел"),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.add), onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => AddToDoPage()));
+            })
+          ],
         ),
         body: /*loading
             ? Loading()
@@ -90,10 +96,10 @@ class _ToDoPageState extends State<ToDoPage> {
   }
 
   Future<void> save() async {
-    widget.todo.title = "titleField.text";
-    testtitle.text = titleField.text;
-    widget.todo.value = false;
-    await dataBase_todo().add(widget.todo);
+    // widget.todo.title = "titleField.text";
+    // testtitle.text = titleField.text;
+    // widget.todo.value = false;
+    // await dataBase_todo().add(widget.todo);
     refresh();
   }
 

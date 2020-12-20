@@ -1,5 +1,5 @@
 import 'package:keep_at_hand/models/note_model.dart';
-import 'package:keep_at_hand/models/todo_list_model.dart';
+import 'package:keep_at_hand/models/todo_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -18,7 +18,7 @@ class dataBase_todo {
     String path = join(dir, 'todo.db');
     var database = await openDatabase(
       path,
-      version: 2,
+      version: 1,
       onCreate: (Database _db, int version) async {
         await _db.execute(
           'CREATE TABLE $table(id INTEGER PRIMARY KEY AUTOINCREMENT, date INTEGER, title TEXT, value INTEGER)'

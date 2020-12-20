@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keep_at_hand/models/note_model.dart';
+import 'package:keep_at_hand/resources/app_colors.dart';
 import 'package:keep_at_hand/resources/app_strings.dart';
 import 'package:keep_at_hand/service/db.dart';
 import 'package:keep_at_hand/ui/pages/note_page.dart';
@@ -27,7 +28,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: AppColors.appBackgroundColor,
 
       // appBar: AppBar(
       //   title: Text(
@@ -52,12 +53,18 @@ class _HomePageState extends State<HomePage> {
       ),
 
       drawer: Drawer(
-          child: IconButton(
-        icon: Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => ToDoPage()));
-        },
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Добавить задачу (не работает)"),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => ToDoPage()));
+            },
+          ),
+        ],
       )),
 
       body: loading
@@ -66,56 +73,77 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 SizedBox(height: 40),
                 Container(
+                  alignment: Alignment.center,
                   padding: EdgeInsets.all(10),
                   child: Text(
                     AppStrings.title,
-                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.w800),
+                    style: TextStyle(
+                      color: AppColors.appTitleColor,
+                      fontSize: 36,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.all(5),
-                    itemCount: notes.length,
-                    itemBuilder: (context, index) {
-                      Note note = notes[index];
-                      return Card(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        color: Colors.white, //Colors.yellow[200]
-                        child: Container(
-                          //padding: EdgeInsets.all(0),
-                          child: ListTile(
-                            title: Text(
-                              note.title,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                  child: (notes.length == 0)
+                      ? Container(
+                          //alignment: Alignment.center,
+                          padding: EdgeInsets.all(30),
+                          child: Text(
+                            AppStrings.noNotes,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ))
+                      : ListView.builder(
+                          padding: EdgeInsets.all(5),
+                          itemCount: notes.length,
+                          itemBuilder: (context, index) {
+                            Note note = notes[index];
+                            return Card(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: 7, horizontal: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                            ),
-                            subtitle: Text(
-                              note.content,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            onTap: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                      builder: (_) => NotePage(
-                                            note: note,
-                                          )))
-                                  .then((v) {
-                                refresh();
-                              });
-                            },
-                            onLongPress: () {},
-                          ),
+                              color: AppColors.cardColor, //Colors.yellow[200]
+                              child: Container(
+                                //padding: EdgeInsets.all(0),
+                                child: ListTile(
+                                  title: Text(
+                                    note.title,
+                                    style: TextStyle(
+                                      color: AppColors.cardTitleColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    note.content,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: AppColors.cardSubtitleColor,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (_) => NotePage(
+                                                  note: note,
+                                                )))
+                                        .then((v) {
+                                      refresh();
+                                    });
+                                  },
+                                  onLongPress: () {},
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
               ],
             ),

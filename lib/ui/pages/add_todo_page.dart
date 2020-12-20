@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:keep_at_hand/models/todo_list_model.dart';
+import 'package:keep_at_hand/models/todo_model.dart';
+import 'package:keep_at_hand/service/db_todo.dart';
 
 class AddToDoPage extends StatefulWidget {
   final ToDo todo;
@@ -28,13 +29,22 @@ class _AddToDoPageState extends State<AddToDoPage> {
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () {
-              setState(() {});
+              //setState(() {});
               save();
-              editMode = true;
             },
           ),
         ],
       ),
+      body: TextField(
+        controller: title,
+      ),
     );
+  }
+
+  Future<void> save() async {
+    if (title.text != '') {
+      widget.todo.title = title.text;
+      await dataBase_todo().add(widget.todo);
+    }
   }
 }
