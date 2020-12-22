@@ -52,20 +52,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
 
-      drawer: Drawer(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("Добавить задачу (не работает)"),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => ToDoPage()));
-            },
-          ),
-        ],
-      )),
+      drawer: _buildDrawer(), // в общем-то можно удалить
 
       body: loading
           ? Loading()
@@ -107,7 +94,7 @@ class _HomePageState extends State<HomePage> {
 
   _buildNoNotesText() {
     return Container(
-      //alignment: Alignment.center,
+        //alignment: Alignment.center,
         padding: EdgeInsets.all(30),
         child: Text(
           AppStrings.noNotes,
@@ -121,8 +108,7 @@ class _HomePageState extends State<HomePage> {
 
   _buildNoteCard(Note note) {
     return Card(
-      margin: EdgeInsets.symmetric(
-          vertical: 7, horizontal: 10),
+      margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -149,20 +135,18 @@ class _HomePageState extends State<HomePage> {
           onTap: () {
             Navigator.of(context)
                 .push(MaterialPageRoute(
-                builder: (_) => NotePage(
-                  note: note,
-                )))
+                    builder: (_) => NotePage(
+                          note: note,
+                        )))
                 .then((v) {
               refresh();
             });
           },
           onLongPress: () {
             //createAlertDialog(context, note);
-            createAlertDialog(context, note)
-                .then((deleteOrNot) {
+            createAlertDialog(context, note).then((deleteOrNot) {
               if (deleteOrNot)
-                Scaffold.of(context)
-                    .showSnackBar(SnackBar(
+                Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text("Удалено"),
                 ));
             });
@@ -173,6 +157,23 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  _buildDrawer () {
+    return Drawer(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Добавить задачу (не работает)"),
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => ToDoPage()));
+              },
+            ),
+          ],
+        ));
   }
 
   Future<void> refresh() async {
