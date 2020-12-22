@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      color: AppColors.cardColor, //Colors.yellow[200]
+      color: AppColors.cardColor,
       child: Container(
         //padding: EdgeInsets.all(0),
         child: ListTile(

@@ -89,7 +89,7 @@ class _NotePageState extends State<NotePage> {
         fontSize: 18,
       ),
       controller: title,
-      autofocus: true,
+      autofocus: !editMode,
       decoration: InputDecoration(
           hintText: "Заголовок",
           hintStyle: TextStyle(color: AppColors.editNoteTitleHintColor)),
@@ -102,7 +102,7 @@ class _NotePageState extends State<NotePage> {
         controller: content,
         keyboardType: TextInputType.multiline,
         textCapitalization: TextCapitalization.sentences,
-        //autofocus: true,
+        autofocus: editMode,
         maxLines: 22,
         style: TextStyle(color: AppColors.editNoteContentColor),
         decoration: InputDecoration(
