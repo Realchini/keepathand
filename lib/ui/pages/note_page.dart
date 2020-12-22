@@ -64,31 +64,7 @@ class _NotePageState extends State<NotePage> {
         body: Column(
           children: <Widget>[
             SizedBox(height: 40),
-            Row(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: AppColors.appColor,
-                    size: 32,
-                  ),
-                  onPressed: () {
-                    print("leaving note page");
-                    save();
-                    Navigator.of(context).pop();
-                  },
-                  color: AppColors.appColor,
-                ),
-                Text(
-                  editMode ? AppStrings.editMode : AppStrings.newNoteMode,
-                  style: TextStyle(
-                    color: AppColors.appColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
-                )
-              ],
-            ),
+            _buildMyAppBar(),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.all(14),
@@ -133,6 +109,34 @@ class _NotePageState extends State<NotePage> {
             hintText: "Начните писать",
             border: InputBorder.none,
             hintStyle: TextStyle(color: AppColors.editNoteContentHintColor)));
+  }
+
+  _buildMyAppBar() {
+    return Row(
+      children: [
+        IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: AppColors.appColor,
+            size: 32,
+          ),
+          onPressed: () {
+            print("leaving note page");
+            save();
+            Navigator.of(context).pop();
+          },
+          color: AppColors.appColor,
+        ),
+        Text(
+          editMode ? AppStrings.editMode : AppStrings.newNoteMode,
+          style: TextStyle(
+            color: AppColors.appColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        )
+      ],
+    );
   }
 
   // _closePage() {
