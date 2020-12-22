@@ -41,7 +41,7 @@ class _NotePageState extends State<NotePage> {
       },
       child: Scaffold(
         backgroundColor: AppColors.appBackgroundColor,
-        appBar: AppBar(
+        /* appBar: AppBar(
           title: Text(editMode ? AppStrings.editMode : AppStrings.newNoteMode),
           actions: <Widget>[
             IconButton(
@@ -60,38 +60,86 @@ class _NotePageState extends State<NotePage> {
                 },
               )
           ],
-        ),
-        body: ListView(padding: EdgeInsets.all(14), children: <Widget>[
-          TextField(
-            style: TextStyle(
-              color: AppColors.editNoteTitleColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
+        ), */
+        body: Column(
+          children: <Widget>[
+            SizedBox(height: 40),
+            Row(
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: AppColors.appColor,
+                    size: 32,
+                  ),
+                  onPressed: () {
+                    print("leaving note page");
+                    save();
+                    Navigator.of(context).pop();
+                  },
+                  color: AppColors.appColor,
+                ),
+                Text(
+                  editMode ? AppStrings.editMode : AppStrings.newNoteMode,
+                  style: TextStyle(
+                    color: AppColors.appColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                )
+              ],
             ),
-            controller: title,
-            autofocus: true,
-            decoration: InputDecoration(
-                hintText: "Заголовок",
-                hintStyle: TextStyle(color: AppColors.editNoteTitleHintColor)),
-            textCapitalization: TextCapitalization.sentences,
-          ),
-          SizedBox(height: 10),
-          TextField(
-              controller: content,
-              keyboardType: TextInputType.multiline,
-              textCapitalization: TextCapitalization.sentences,
-              //autofocus: true,
-              maxLines: 22,
-              style: TextStyle(color: AppColors.editNoteContentColor),
-              decoration: InputDecoration(
-                  hintText: "Начните писать",
-                  border: InputBorder.none,
-                  hintStyle:
-                      TextStyle(color: AppColors.editNoteContentHintColor))),
-        ]),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.all(14),
+                children: <Widget>[
+                  _buildTitleField(),
+                  SizedBox(height: 10),
+                  _buildContentField(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+
+  _buildTitleField() {
+    return TextField(
+      style: TextStyle(
+        color: AppColors.editNoteTitleColor,
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+      ),
+      controller: title,
+      autofocus: true,
+      decoration: InputDecoration(
+          hintText: "Заголовок",
+          hintStyle: TextStyle(color: AppColors.editNoteTitleHintColor)),
+      textCapitalization: TextCapitalization.sentences,
+    );
+  }
+
+  _buildContentField() {
+    return TextField(
+        controller: content,
+        keyboardType: TextInputType.multiline,
+        textCapitalization: TextCapitalization.sentences,
+        //autofocus: true,
+        maxLines: 22,
+        style: TextStyle(color: AppColors.editNoteContentColor),
+        decoration: InputDecoration(
+            hintText: "Начните писать",
+            border: InputBorder.none,
+            hintStyle: TextStyle(color: AppColors.editNoteContentHintColor)));
+  }
+
+  // _closePage() {
+  //   print("leaving note page");
+  //   save();
+  //   Navigator.of(context).pop();
+  // }
 
   Future<void> save() async {
     if (title.text != '') {
