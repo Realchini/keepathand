@@ -72,94 +72,106 @@ class _HomePageState extends State<HomePage> {
           : Column(
               children: <Widget>[
                 SizedBox(height: 40),
-                Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    AppStrings.title,
-                    style: TextStyle(
-                      color: AppColors.appTitleColor,
-                      fontSize: 36,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ),
+                _buildAppTitle(),
                 Expanded(
                   child: (notes.length == 0)
-                      ? Container(
-                          //alignment: Alignment.center,
-                          padding: EdgeInsets.all(30),
-                          child: Text(
-                            AppStrings.noNotes,
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ))
+                      ? _buildNoNotesText()
                       : ListView.builder(
                           padding: EdgeInsets.all(5),
                           itemCount: notes.length,
                           itemBuilder: (context, index) {
                             Note note = notes[index];
-                            return Card(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 7, horizontal: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              color: AppColors.cardColor, //Colors.yellow[200]
-                              child: Container(
-                                //padding: EdgeInsets.all(0),
-                                child: ListTile(
-                                  title: Text(
-                                    note.title,
-                                    style: TextStyle(
-                                      color: AppColors.cardTitleColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    note.content,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: AppColors.cardSubtitleColor,
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (_) => NotePage(
-                                                  note: note,
-                                                )))
-                                        .then((v) {
-                                      refresh();
-                                    });
-                                  },
-                                  onLongPress: () {
-                                    //createAlertDialog(context, note);
-                                    createAlertDialog(context, note)
-                                        .then((deleteOrNot) {
-                                      if (deleteOrNot)
-                                        Scaffold.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text("Удалено"),
-                                        ));
-                                    });
-                                    print("long pressed on: " + note.title);
-                                    //dataBase().delete(note);
-                                    //refresh();
-                                  },
-                                ),
-                              ),
-                            );
+                            return _buildNoteCard(note);
                           },
                         ),
                 ),
               ],
             ),
+    );
+  }
+
+  _buildAppTitle() {
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.all(10),
+      child: Text(
+        AppStrings.title,
+        style: TextStyle(
+          color: AppColors.appTitleColor,
+          fontSize: 36,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+    );
+  }
+
+  _buildNoNotesText() {
+    return Container(
+      //alignment: Alignment.center,
+        padding: EdgeInsets.all(30),
+        child: Text(
+          AppStrings.noNotes,
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 16,
+            fontStyle: FontStyle.italic,
+          ),
+        ));
+  }
+
+  _buildNoteCard(Note note) {
+    return Card(
+      margin: EdgeInsets.symmetric(
+          vertical: 7, horizontal: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      color: AppColors.cardColor, //Colors.yellow[200]
+      child: Container(
+        //padding: EdgeInsets.all(0),
+        child: ListTile(
+          title: Text(
+            note.title,
+            style: TextStyle(
+              color: AppColors.cardTitleColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          subtitle: Text(
+            note.content,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: AppColors.cardSubtitleColor,
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(
+                builder: (_) => NotePage(
+                  note: note,
+                )))
+                .then((v) {
+              refresh();
+            });
+          },
+          onLongPress: () {
+            //createAlertDialog(context, note);
+            createAlertDialog(context, note)
+                .then((deleteOrNot) {
+              if (deleteOrNot)
+                Scaffold.of(context)
+                    .showSnackBar(SnackBar(
+                  content: Text("Удалено"),
+                ));
+            });
+            print("long pressed on: " + note.title);
+            //dataBase().delete(note);
+            //refresh();
+          },
+        ),
+      ),
     );
   }
 
