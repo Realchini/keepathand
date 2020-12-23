@@ -43,17 +43,7 @@ class _HomePageState extends State<HomePage> {
       //   ),
       // ),
 
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NotePage(note: new Note()))).then((v) {
-            refresh();
-          });
-        },
-      ),
+      floatingActionButton: _buildAddButton(),
 
       drawer: _buildDrawer(), // в общем-то можно удалить
 
@@ -103,6 +93,20 @@ class _HomePageState extends State<HomePage> {
           fontWeight: FontWeight.w800,
         ),
       ),
+    );
+  }
+
+  _buildAddButton() {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NotePage(note: new Note()))).then((v) {
+          refresh();
+        });
+      },
     );
   }
 
