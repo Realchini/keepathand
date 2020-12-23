@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:keep_at_hand/models/note_model.dart';
+import 'package:keep_at_hand/models/preferences.dart';
 import 'package:keep_at_hand/resources/app_colors.dart';
 import 'package:keep_at_hand/resources/app_strings.dart';
 import 'package:keep_at_hand/service/db.dart';
 import 'package:keep_at_hand/ui/pages/note_page.dart';
 import 'package:keep_at_hand/ui/pages/todo_page.dart';
 import 'package:keep_at_hand/ui/views/loading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    Preferences();
     refresh();
   }
 
@@ -59,7 +62,16 @@ class _HomePageState extends State<HomePage> {
           : Column(
               children: <Widget>[
                 SizedBox(height: 40),
-                _buildAppTitle(),
+                Stack(
+                  children: [
+                    Align(child: _buildAppTitle(),),
+                    Positioned(
+                      right: 10,
+                      top: 5,
+                      child: _buildNightModeButton(),
+                    )
+                  ],
+                ),
                 Expanded(
                   child: (notes.length == 0)
                       ? _buildNoNotesText()
@@ -89,6 +101,20 @@ class _HomePageState extends State<HomePage> {
           fontWeight: FontWeight.w800,
         ),
       ),
+    );
+  }
+
+  _buildNightModeButton() {
+    return IconButton(
+      //alignment: Alignment.centerRight,
+      icon: Icon(
+        Preferences.nightMode ? Icons.wb_sunny : Icons.nightlight_round,
+        color: AppColors.cardSubtitleColor,
+        size: 22,
+      ),
+      onPressed: () {setState(() {
+        Preferences.setNightMode();
+      });},
     );
   }
 
@@ -147,7 +173,7 @@ class _HomePageState extends State<HomePage> {
             createAlertDialog(context, note).then((deleteOrNot) {
               if (deleteOrNot)
                 Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text("Удалено"),
+                  content: Text(AppStrings.deleted),
                 ));
             });
             print("long pressed on: " + note.title);
@@ -159,21 +185,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _buildDrawer () {
+  _buildDrawer() {
     return Drawer(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Добавить задачу (не работает)"),
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => ToDoPage()));
-              },
-            ),
-          ],
-        ));
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Добавить задачу (не работает)"),
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => ToDoPage()));
+          },
+        ),
+      ],
+    ));
   }
 
   Future<void> refresh() async {

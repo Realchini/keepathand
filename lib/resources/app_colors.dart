@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:keep_at_hand/models/preferences.dart';
 
 class AppColors {
   static MaterialColor appColor = Colors.deepOrange;
@@ -7,7 +8,7 @@ class AppColors {
   static int nightTime = 22;
   static int morningTime = 7;
 
-  static bool isNight() => now.hour >= 23 || now.hour < 7;
+  static bool isNight() => Preferences.nightMode || now.hour >= 23 || now.hour < 7;
 
   static Color get appBackgroundColor {
     if(isNight()) return Colors.grey[900]; // grey[850]

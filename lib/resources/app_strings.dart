@@ -8,6 +8,7 @@ class AppStrings {
   static String deleteNoteQuestion = "Удалить заметку?";
   static String yes = "Да";
   static String cancel = "Отмена";
+  static String deleted = "Удалено";
 
 
   // NOTE PAGE
