@@ -64,7 +64,9 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(height: 40),
                 Stack(
                   children: [
-                    Align(child: _buildAppTitle(),),
+                    Align(
+                      child: _buildAppTitle(),
+                    ),
                     Positioned(
                       right: 10,
                       top: 5,
@@ -112,9 +114,11 @@ class _HomePageState extends State<HomePage> {
         color: AppColors.cardSubtitleColor,
         size: 22,
       ),
-      onPressed: () {setState(() {
-        Preferences.setNightMode();
-      });},
+      onPressed: () {
+        setState(() {
+          Preferences.setNightMode();
+        });
+      },
     );
   }
 
@@ -187,19 +191,31 @@ class _HomePageState extends State<HomePage> {
 
   _buildDrawer() {
     return Drawer(
+      child: Container(
+        color: AppColors.cardColor,
         child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text("Добавить задачу (не работает)"),
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => ToDoPage()));
-          },
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Добавить задачу (не работает)",
+              style: TextStyle(
+                color: AppColors.cardTitleColor,
+              ),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.add,
+                color: AppColors.cardTitleColor,
+              ),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => ToDoPage()));
+              },
+            ),
+          ],
         ),
-      ],
-    ));
+      ),
+    );
   }
 
   Future<void> refresh() async {
