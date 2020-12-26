@@ -41,26 +41,7 @@ class _NotePageState extends State<NotePage> {
       },
       child: Scaffold(
         backgroundColor: AppColors.appBackgroundColor,
-        /* appBar: AppBar(
-          title: Text(editMode ? AppStrings.editMode : AppStrings.newNoteMode),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.save),
-              onPressed: () {
-                setState(() {});
-                save();
-                editMode = true;
-              },
-            ),
-            if (editMode)
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  delete();
-                },
-              )
-          ],
-        ), */
+
         body: Column(
           children: <Widget>[
             SizedBox(height: 40),
@@ -138,12 +119,6 @@ class _NotePageState extends State<NotePage> {
       ],
     );
   }
-
-  // _closePage() {
-  //   print("leaving note page");
-  //   save();
-  //   Navigator.of(context).pop();
-  // }
 
   Future<void> save() async {
     if (title.text != '') {

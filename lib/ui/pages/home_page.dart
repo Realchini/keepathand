@@ -19,12 +19,10 @@ class _HomePageState extends State<HomePage> {
   bool loading = true;
   List<Note> notes;
 
-  //double statusBarHeight = MediaQuery.padding.top;
-
   @override
   void initState() {
-    super.initState();
     Preferences();
+    super.initState();
     refresh();
   }
 
@@ -32,16 +30,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
-
-      // appBar: AppBar(
-      //   title: Text(
-      //     "keep at hand",
-      //     style: TextStyle(
-      //         //fontStyle: FontStyle.italic,
-      //         //fontWeight: FontWeight.bold,
-      //         ),
-      //   ),
-      // ),
 
       floatingActionButton: _buildAddButton(),
 
@@ -255,9 +243,4 @@ class _HomePageState extends State<HomePage> {
           );
         });
   }
-
-// void refresh() {
-//   notes = dataBase().getNotes();
-//   //setState(() => loading = false);
-// }
 }
